@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FireFighterCar</string>
+    <string name="button_connect">Connect</string>
+    <string name="connect">Connect</string>
+</resources>
