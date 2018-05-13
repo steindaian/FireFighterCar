@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VideoViewActivity"></activity>
+        <activity android:name=".VideoViewActivity" android:screenOrientation="landscape"></activity>
+        <service android:name=".SocketService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

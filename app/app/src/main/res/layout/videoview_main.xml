@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/webview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    />
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/videoview">
+
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:id="@+id/webview"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="200dp">
+
+
+        <io.github.controlwear.virtual.joystick.android.JoystickView
+            android:id="@+id/steeringJoystick"
+            android:layout_width="576dp"
+            android:layout_height="124dp"
+            app:JV_backgroundColor="#867979"
+            app:JV_backgroundSizeRatio="70%"
+            app:JV_buttonColor="#e6ffe6"
+            app:JV_buttonSizeRatio="20%"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+             />
+        <io.github.controlwear.virtual.joystick.android.JoystickView
+            android:id="@+id/speedJoystick"
+            android:layout_width="576dp"
+            android:layout_height="124dp"
+            app:JV_backgroundColor="#867979"
+            app:JV_backgroundSizeRatio="70%"
+            app:JV_buttonColor="#e6ffe6"
+            app:JV_buttonSizeRatio="20%"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".2"  />
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="1.8"  />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+
+</FrameLayout>
