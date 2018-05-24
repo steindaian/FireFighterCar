@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "931187576336-cernp0mbrh473t0dnv0cbj3qp0bsunjq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ms.firefightercar",
+            "certificate_hash": "b99f52e97424eed886c0d3e51727136b0cf60810"
+          }
+        },
+        {
           "client_id": "931187576336-oeqqit1n8i775qhmj6j1adjegvba8mkl.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931187576336-oeqqit1n8i775qhmj6j1adjegvba8mkl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

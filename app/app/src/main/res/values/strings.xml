@@ -2,4 +2,8 @@
     <string name="app_name">FireFighterCar</string>
     <string name="button_connect">Connect</string>
     <string name="connect">Connect</string>
+    <string name="vocal_commands">Vocal Commands</string>
+    <string name="stop_vocal">Stop Vocal Commands</string>
+    <string name="temperature_and_humidity">Temperature and Humidity</string>
+    <string name="textview">Sensor Data:</string>
 </resources>

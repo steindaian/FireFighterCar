@@ -72,9 +72,15 @@ def main(server_address):
                             direction = json_recv['direction']
                             steering = json_recv['steering']
                             car.setSteering(direction,steering)
+                        elif operation == "stop":
+                            car.brake()
                         else :
                             print(json.dumps(json_recv, indent=4, sort_keys=True))
 
+                    except KeyError as e:
+                        print('Some commands were missing from JSON')
+                        pass
+                        
                     except Exception as e:
                         print('Something went wrong when running(json didnt decode properly.Disconnecting...')
                         car.brake()
@@ -113,5 +119,6 @@ if __name__ == '__main__':
     except KeyboardInterrupt as e:
         raise
     finally:
+        GPIO.cleanup()
         pass
     

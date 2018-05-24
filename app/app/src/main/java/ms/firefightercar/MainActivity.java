@@ -1,7 +1,12 @@
 package ms.firefightercar;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +36,7 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity {
 
+    private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 1111;
     Button button;
     private final String rpiMac = "50:2b:73:e0:26:85";
 
@@ -44,9 +50,10 @@ public class MainActivity extends Activity {
         button = (Button) findViewById(R.id.MyButton);
 
         //get raspberry pi ip adress
-        String rpi_ip = "192.168.137.184";//getRpiIp(rpiMac);
+        String rpi_ip = getRpiIp(rpiMac);//"192.168.137.184";//getRpiIp(rpiMac);
 
-
+        //requestRecordAudioPermission(Manifest.permission.RECORD_AUDIO);
+        //requestRecordAudioPermission(Manifest.permission.INTERNET);
         //new MyTask().execute();
         // Capture button clicks
         button.setOnClickListener((arg0) -> {
@@ -64,7 +71,56 @@ public class MainActivity extends Activity {
 
         });
     }
-    private class MyTask extends AsyncTask {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                Toast.makeText(this,"NO RECORD ",Toast.LENGTH_LONG).show();
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    Toast.makeText(this,"Record Audio not permitted",Toast.LENGTH_LONG).show();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+    /*private class MyTask extends AsyncTask {
 
         @Override
         protected Object doInBackground(Object[] objects) {
@@ -95,7 +151,7 @@ public class MainActivity extends Activity {
             }
 
         }
-    }
+    }*/
     @Nullable
     private String getRpiIp(String rpi_mac) {
         BufferedReader bufRead = null;

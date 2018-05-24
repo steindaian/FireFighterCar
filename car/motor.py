@@ -33,7 +33,20 @@ class Motor():
         GPIO.setup(self.M2_EN2,GPIO.OUT) 
         print('Initializing motors at 20 KHz')
 
+    def translate(value, leftMin, leftMax, rightMin, rightMax):
+        # Figure out how 'wide' each range is
+        leftSpan = leftMax - leftMin
+        rightSpan = rightMax - rightMin
+
+        # Convert the left range into a 0-1 range (float)
+        valueScaled = float(value - leftMin) / float(leftSpan)
+
+        # Convert the 0-1 range into a value in the right range.
+        return rightMin + (valueScaled * rightSpan)
+
     def setSpeed(self,direction,speed):
+        if speed != 0:
+            speed = translate(speed,1,100,40,90)
         if 0 <= speed <= 100:
             self.pwm1.ChangeDutyCycle(speed)
             if direction:
@@ -46,6 +59,10 @@ class Motor():
                 print('speed: ' + str(speed) + ' backward')
     
     def setSteering(self,direction,steering):
+        if steering > 0:
+            steering = 100
+        if steering < 0:
+            steering = 0
         if 0 <= steering <= 100:
             self.pwm2.ChangeDutyCycle(steering)
             if direction:
@@ -54,8 +71,8 @@ class Motor():
                 print('steering:' + str(steering) + ' left')
             else:
                 #print(self.M2_EN2)
-                #GPIO.output(self.M2_EN2,GPIO.HIGH)
-                #GPIO.output(self.M2_EN1,GPIO.LOW)
+                GPIO.output(self.M2_EN2,GPIO.HIGH)
+                GPIO.output(self.M2_EN1,GPIO.LOW)
                 print('steering: ' + str(steering) + ' right')
 
     def brake(self):

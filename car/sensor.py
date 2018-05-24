@@ -71,7 +71,7 @@ class Sensor():
             time.sleep(2)
             while self.en:
                 data = {"temp": self.temperature, "humidity": self.humidity, "co_leak": self.co_leak,"lpg": self.lpg,"co_level": self.co_level,"smoke": self.smoke,"distance":self.distance}
-                self.firebase.post('/sensor', data)
+                self.firebase.patch('/sensor', data) #or post
         except Exception as e:
             raise
         finally:

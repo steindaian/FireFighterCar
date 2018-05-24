@@ -8,10 +8,31 @@
 
 
     <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:id="@+id/webview"/>
+        android:layout_height="524dp"
+        android:layout_gravity="center">
+
+
+    </WebView>
+
+    <TextView
+        android:id="@+id/liveInfo1"
+        android:layout_width="115dp"
+        android:layout_height="201dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/textview"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <TextView
+        android:id="@+id/liveInfo2"
+        android:layout_width="149dp"
+        android:layout_height="201dp"
+        android:layout_marginStart="450dp"
+        android:text="@string/textview"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="122dp" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout"
@@ -32,8 +53,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-             />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <io.github.controlwear.virtual.joystick.android.JoystickView
             android:id="@+id/speedJoystick"
             android:layout_width="576dp"
@@ -45,20 +66,50 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent=".2"  />
+            app:layout_constraintGuide_percent=".2" />
+
         <android.support.constraint.Guideline
             android:id="@+id/guideline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="1.8"  />
+            app:layout_constraintGuide_percent="1.8" />
+
+        <RelativeLayout
+            android:layout_width="167dp"
+            android:layout_height="94dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="8dp"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:text="@string/vocal_commands"
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="50dp"/>
+            <Button
+                android:text="@string/stop_vocal"
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="50dp" />
+
+
+        </RelativeLayout>
 
 
     </android.support.constraint.ConstraintLayout>

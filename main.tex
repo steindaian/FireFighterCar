@@ -212,13 +212,14 @@ firebase = firebase.FirebaseApplication(FIREBASE_ROOT, None)
 \end{python}
 
 \subsection{Android application}
-The Android application represents the Controller part of the FireFighterCar. The application assumes that the car is connected to the same network as the application is.\\
+The Android application represents the Controller part of the FireFighterCar. The application assumes that the car(Raspberry Pi) is connected to the same network as the application is.\\
 
 The main features used for constructing this application are:
 \begin{itemize} 
 \item A WebView UI component for viewing the video feed streemed from raspberry(+additional camera data)
 \item Two joystick-like buttons for controlling the steering and the speed of the car; the communication is taking place using socket services
 \item A TextView with the sensor data from the car(using Firebase Realtime Database)
+\item Speech to Text translation using SpeechRecognizer service provided by Google
 \item Concurrent jobs, network-based discovery functions(for searching the Pi's IP) and other mechanism used for building a smooth Controller Application
 \end{itemize}
 
@@ -226,23 +227,26 @@ The main features used for constructing this application are:
 
 The Web Client offers a way to debug the video stream, without controlling the motors and cloud retrival information.\\
 
+
 \section{Results and further work}
 
 The current version of the project supports the following functionalities:
 \begin{itemize}  
 \item reliable reading of the data sensors
-\item storing data to Firebase Database
-\item client implementations for retrieving data stored in Firebase Database (Android) and controlling the system
+\item storing data to Firebase Realtime Database
+\item a client implementations for retrieving data stored in Firebase Database (Android) and controlling the system
 \item a way to debug the camera submodule using a simple Web Browser
 \item a live video stream to the Controller subsystem
+\item speech recognizer for ease of use(designed for industrial usage)
 \end{itemize}
 
 The following list of extensions and improvements was identified to be supported in the future:
 \begin{itemize}  
 \item the system may provide a module for data interpretation.
 \item remote access for configuring data interval reading
-\item extend Android app functionality to use vocal commands
+\item extend car capabilities of interpreting the video stream(Human recognition)
 \item improve the hierarchy design of Firebase Database
+\item a way of centralizing sensor data and outputs frame from the camera(to be used by a supervisor in activity field)
 \end{itemize}
 
 \newpage
