@@ -39,11 +39,7 @@ class Sensor():
 
     def __init__(self):
         GPIO.setwarnings(False)
-        GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(self.GAS_D,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(self.DIS_TRIG,GPIO.OUT)
-        GPIO.setup(self.DIS_ECHO,GPIO.IN)
 
         self.en = True
         self.en_distance = True
@@ -61,69 +57,82 @@ class Sensor():
         self.smoke = -1.0
 
     def run(self):
-        #t1 = Thread(target = self.read_distance)
-        #t2 = Thread(target = self.read_mq)
+        t1 = Thread(target = self.read_distance)
+        t2 = Thread(target = self.read_mq)
         t3 = Thread(target = self.read_temp_hum)
         try:
-            #t1.start()
-            #t2.start()
+            t1.start()
+            t2.start()
             t3.start()
-            time.sleep(2)
+            
             while self.en:
-                data = {"temp": self.temperature, "humidity": self.humidity, "co_leak": self.co_leak,"lpg": self.lpg,"co_level": self.co_level,"smoke": self.smoke,"distance":self.distance}
+                time.sleep(2)
+                data = {"temperature": self.temperature, "humidity": self.humidity, "co_leak": self.co_leak,"lpg": self.lpg,"co_level": self.co_level,"smoke": self.smoke,"distance":self.distance}
                 self.firebase.patch('/sensor', data) #or post
         except Exception as e:
-            raise
+            pass
         finally:
             time.sleep(0.5)
-            #t1.join()
-            #t2.join()
+            t1.join()
+            t2.join()
             t3.join()
                 
 
     def read_distance(self):
+        GPIO.setup(self.DIS_TRIG,GPIO.OUT)
         GPIO.output(self.DIS_TRIG,False)
+
+        GPIO.setup(self.DIS_ECHO,GPIO.IN)
         time.sleep(2)
         while self.en_distance:
             GPIO.output(self.DIS_TRIG, True)
             time.sleep(0.00001)
             GPIO.output(self.DIS_TRIG, False)
 
-            while GPIO.input(self.DIS_ECHO)==0:
+            pulse_start = time.time()
+            pulse_end = time.time()
+            #while GPIO.input(self.DIS_ECHO) == 0:
+            #    pulse_start = time.time()
+
+            while GPIO.input(self.DIS_ECHO) == 0:
                 pulse_start = time.time()
-            while GPIO.input(self.DIS_ECHO)==1:
+
+            while GPIO.input(self.DIS_ECHO) == 1:
                 pulse_end = time.time()    
 
             pulse_duration = pulse_end - pulse_start
             dist = pulse_duration * self.SOUND_SPEED_CONSTANT
             self.distance = round(dist,2)
-            time.sleep(2)
+            #time.sleep(1)
             #return round(dist,2)
 
 
     def read_mq(self):
+        GPIO.setup(self.GAS_D,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
         #prepare mq-7 sensor
         self.mq = MQ(10,self.GAS_A)
         while self.en_smoke:
             #10,analog pin
             self.co_leak = False
             #read
-            perc = self.mq.MQPercentage()
-            self.co_level = perc["CO"]
-            self.lpg = perc["GAS_LPG"]
-            self.smoke = perc["SMOKE"]
-            #sys.stdout.write("LPG: %g ppm, CO: %g ppm, Smoke: %g ppm\n" % (perc["GAS_LPG"], perc["CO"], perc["SMOKE"]))
-            #sys.stdout.flush()
-            if GPIO.input(self.GAS_D) == 0:
-                self.co_leak = True
-                #print("CO leak detected")
-            #return (co_leak,perc["GAS_LPG"], perc["CO"], perc["SMOKE"])
+            try:
+                perc = self.mq.MQPercentage()
+                self.co_level = perc["CO"]
+                self.lpg = perc["GAS_LPG"]
+                self.smoke = perc["SMOKE"]
+            except ValueError:
+                pass
+            finally:
+                if GPIO.input(self.GAS_D) == 0:
+                    self.co_leak = True
+                time.sleep(2)
         
 
     def read_temp_hum(self):
         while self.en_temp:
             #read_retry(sensor,pin),sensor==11
             self.humidity, self.temperature = Adafruit_DHT.read_retry(11, self.DHT11)
+            time.sleep(10)
             #print ('Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(self.temperature, self.humidity))
             #return Adafruit_DHT.read_retry(11, self.DHT11)
 

@@ -4,7 +4,7 @@ import sys
 import json
 import time
 from motor import Motor
-#from sensor import Sensor
+from sensor import Sensor
 import subprocess
 from threading import Thread
 
@@ -12,8 +12,8 @@ def main(server_address):
     
     car = Motor()
     print('Car motors system started')
-    #sensor = Sensor()
-    #sensor_thread = Thread(target = sensor.run)
+    sensor = Sensor()
+    sensor_thread = Thread(target = sensor.run)
 
     start_camera = "sudo systemctl start motion.service"
     stop_camera = "sudo systemctl stop motion.service"
@@ -24,7 +24,7 @@ def main(server_address):
         p = subprocess.call(start_camera.split())
         print('Camera feed started')
         
-        #sensor_thread.start()
+        sensor_thread.start()
         print("Sensor system started")
 
         print('Socket communication started')
@@ -85,7 +85,7 @@ def main(server_address):
                         print('Something went wrong when running(json didnt decode properly.Disconnecting...')
                         car.brake()
                         en = True
-                        pass
+                        raise
                     finally:
                         pass
                         #en = False
@@ -100,17 +100,16 @@ def main(server_address):
     except Exception as e:
         print('Exception occured in starting functionalities')
         connection.close()
-        pass
+        raise
     finally:
         print('Stopping the car')
         car.stop()
         print('Stopping the socket communication')
-        
+        print("Stopping sensor system")
+        sensor.stop()
+        sensor_thread.join()
         print('Stopping the camera feed')
         q = subprocess.call(stop_camera.split())
-        print("Stopping sensor system")
-        #sensor.stop()
-        #sensor_thread.join()
 
 if __name__ == '__main__':
     server_address = ('0.0.0.0', 8089)
@@ -119,6 +118,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt as e:
         raise
     finally:
+        time.sleep(2)
         GPIO.cleanup()
         pass
     

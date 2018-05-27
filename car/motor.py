@@ -33,7 +33,7 @@ class Motor():
         GPIO.setup(self.M2_EN2,GPIO.OUT) 
         print('Initializing motors at 20 KHz')
 
-    def translate(value, leftMin, leftMax, rightMin, rightMax):
+    def translate(self,value, leftMin, leftMax, rightMin, rightMax):
         # Figure out how 'wide' each range is
         leftSpan = leftMax - leftMin
         rightSpan = rightMax - rightMin
@@ -46,7 +46,7 @@ class Motor():
 
     def setSpeed(self,direction,speed):
         if speed != 0:
-            speed = translate(speed,1,100,40,90)
+            speed = self.translate(speed,1,100,50,96)
         if 0 <= speed <= 100:
             self.pwm1.ChangeDutyCycle(speed)
             if direction:
