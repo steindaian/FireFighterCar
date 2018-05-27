@@ -103,7 +103,7 @@ def main(server_address):
         raise
     finally:
         print('Stopping the car')
-        car.stop()
+        car.brake()
         print('Stopping the socket communication')
         print("Stopping sensor system")
         sensor.stop()

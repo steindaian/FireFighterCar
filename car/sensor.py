@@ -66,7 +66,7 @@ class Sensor():
             t3.start()
             
             while self.en:
-                time.sleep(2)
+                time.sleep(1)
                 data = {"temperature": self.temperature, "humidity": self.humidity, "co_leak": self.co_leak,"lpg": self.lpg,"co_level": self.co_level,"smoke": self.smoke,"distance":self.distance}
                 self.firebase.patch('/sensor', data) #or post
         except Exception as e:
@@ -90,10 +90,7 @@ class Sensor():
             GPIO.output(self.DIS_TRIG, False)
 
             pulse_start = time.time()
-            pulse_end = time.time()
-            #while GPIO.input(self.DIS_ECHO) == 0:
-            #    pulse_start = time.time()
-
+            pulse_end = time.time() - 1
             while GPIO.input(self.DIS_ECHO) == 0:
                 pulse_start = time.time()
 
@@ -146,7 +143,6 @@ class Sensor():
         time.sleep(0.5)
         self.en = False
         time.sleep(0.5)
-        GPIO.cleanup()
 
 if __name__ == '__main__':
     s = Sensor()
@@ -159,4 +155,5 @@ if __name__ == '__main__':
     finally:
         s.stop()
         t.join()
+        GPIO.cleanup()
     
