@@ -38,8 +38,8 @@ class Sensor():
     FIREBASE_ROOT = "https://ms-proj.firebaseio.com/"
 
     def __init__(self):
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)
+        #GPIO.setwarnings(False)
+        #GPIO.setmode(GPIO.BOARD)
 
         self.en = True
         self.en_distance = True

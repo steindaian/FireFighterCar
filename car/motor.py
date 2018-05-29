@@ -19,8 +19,8 @@ class Motor():
         self.M2_EN2 = 13
         self.M2_PWM = 15
 
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setwarnings(False)
+        #GPIO.setmode(GPIO.BOARD)
+        #GPIO.setwarnings(False)
         GPIO.setup(self.M1_PWM,GPIO.OUT)
         GPIO.setup(self.M2_PWM,GPIO.OUT)
         self.pwm1 = GPIO.PWM(self.M1_PWM,self.FREQ)

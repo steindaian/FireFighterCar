@@ -9,7 +9,7 @@ import subprocess
 from threading import Thread
 
 def main(server_address):
-    
+    GPIO.setmode(GPIO.BOARD)
     car = Motor()
     print('Car motors system started')
     sensor = Sensor()
